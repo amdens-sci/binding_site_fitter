@@ -1,0 +1,116 @@
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QApplication, QLabel, QWidget, QPushButton, QVBoxLayout, QMainWindow, QMessageBox, QFileDialog, QLineEdit, QHBoxLayout, QCheckBox, QComboBox
+from PyQt5.QtGui import QPixmap
+import pandas as pd, numpy as np, pb_fitter
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+
+class pkdoctor(QMainWindow):
+
+	def __init__(self):
+		super().__init__()
+		self.current_pk_dataset = pd.DataFrame()
+		self.current_model = None
+
+
+		self.central_plot = Figure(figsize=(10,6))
+		self.canvas = FigureCanvas(self.central_plot)
+		self.toolbar = NavigationToolbar(self.canvas, self)
+		
+		self.setWindowTitle('PK Doctor')
+		self.central_widget = QWidget()
+		self.setCentralWidget(self.central_widget)
+		mainlayout = QVBoxLayout(self.central_widget)
+		horiz_layout_top = QHBoxLayout()
+		horiz_layout_bottom = QHBoxLayout()
+
+		mainlayout.addWidget(self.toolbar)
+		mainlayout.addWidget(self.canvas)
+		
+		start_pbfitter_button = QPushButton('Generate a new protein binding model')
+		mainlayout.addWidget(start_pbfitter_button)
+		start_pbfitter_button.clicked.connect(self.start_pbfitter)
+
+		pk_import_button = QPushButton('Import PK Data')
+		horiz_layout_top.addWidget(pk_import_button)
+		pk_import_button.clicked.connect(self.pk_import)
+
+		load_model_button = QPushButton('Load protein binding model')
+		horiz_layout_top.addWidget(load_model_button)
+		load_model_button.clicked.connect(self.load_model)
+
+		calc_free_button = QPushButton('Calculate & plot free concentrations')
+		horiz_layout_bottom.addWidget(calc_free_button)
+		calc_free_button.clicked.connect(self.calc_free)
+
+		export_free_button = QPushButton('Export free concentrations')
+		horiz_layout_bottom.addWidget(export_free_button)
+		export_free_button.clicked.connect(self.export_free)
+
+		mainlayout.addLayout(horiz_layout_top)
+		mainlayout.addLayout(horiz_layout_bottom)
+		self.show()
+
+
+
+
+
+	def pk_import(self):
+		alert = QMessageBox()
+		alert.setText("A quick reminder: When importing PK data, use csv files where the first column contains an identifier for each individual / rodent, "
+			"the second column contains time and the third column contains total drug concentration. Units are up to you but you'll need to change "
+			"the axis titles if you use non-standard units.")
+		alert.setWindowTitle('Protein Fitter 2000')
+		alert.exec_()
+		options = QFileDialog.Options()
+		filename, _ = QFileDialog.getOpenFileName(self,"Load PK dataset",
+						"","CSV Files (*.csv);;", options=options)
+		if filename:
+			try:
+				self.current_pk_dataset = pd.read_csv(filename, header=None)
+				self.current_pk_dataset.columns = ['individual','time', 'concentration']
+			except:
+				self.sudden_death('There was an error opening the selected file! Clearly you have made a mistake. '
+					'One reason why this may have occurred '
+					'is if you selected a non-csv file or a file with more than two columns. '
+					'Remember your instructions!')
+			if len(self.current_pk_dataset.columns) != 3:
+				self.sudden_death('There was an error opening the selected file! Clearly you have made a mistake. '
+					'One reason why this may have occurred '
+					'is if you selected a non-csv file or a file with more than two columns. '
+					'Remember your instructions!')
+
+	def load_model(self):
+		pass
+	
+
+	def calc_free(self):
+		if len(self.current_pk_dataset.columns) != 3 or self.current_model is None:
+			self.sudden_death("You want to fit the data, but you haven't loaded any? Try loading some first. Now there's an idea!")
+			return
+
+
+	def export_free(self):
+		if len(self.current_pk_dataset.columns) != 3:
+			self.sudden_death("You want to export the data, but you haven't loaded any? Try loading some first. Now there's an idea!")
+			return
+
+
+	def start_pbfitter(self):
+		pbfit_app = pb_fitter.protfitter()
+
+
+
+	def sudden_death(self, error_message):
+		alert = QMessageBox()
+		alert.setText(error_message)
+		alert.setWindowTitle('Sudden Death')
+		alert.exec_()
+	
+
+if __name__ == '__main__':
+	app = QApplication([])
+	current_app = pkdoctor()
+	app.exec_()
+	exit()
