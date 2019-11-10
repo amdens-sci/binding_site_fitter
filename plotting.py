@@ -27,7 +27,8 @@ def gen_plot(qtapp):
 	ax.scatter(xactual, yactual, color='k', s=1.0)
 	ax.plot(qtapp.current_model.x_values_spanning_range, qtapp.current_model.predicted_free, 
 			color=qtapp.color_choice, linewidth=0.5)
-	ax.fill_between(qtapp.current_model.x_values_spanning_range, qtapp.current_model.lowpreds,
+	if qtapp.current_model.lowpreds is not None and qtapp.current_model.highpreds is not None:
+                ax.fill_between(qtapp.current_model.x_values_spanning_range, qtapp.current_model.lowpreds,
 				qtapp.current_model.highpreds, color = qtapp.color_choice,
 				alpha=0.4)
 	qtapp.canvas.draw()

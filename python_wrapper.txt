@@ -1,13 +1,18 @@
-import ctypes
+import ctypes, os
 import numpy as np
 from numpy.ctypeslib import ndpointer
 
-lib = ctypes.cdll.LoadLibrary('mylib.dll')
-fun = lib.find_roots
-fun.restype = None
-fun.argtypes = [ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
+#lib = ctypes.cdll.LoadLibrary('mylib.so')
+lib = np.ctypeslib.load_library('mylib.so', os.getcwd())
+rootfind = lib.find_single_positive_root
+rootfind.restype = None
+rootfind.argtypes = [ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
 		ctypes.c_int, ctypes.c_int,
 		ndpointer(np.complex128, flags="C_CONTIGUOUS")]
+
+rootfind.argtypes = [ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
+		ctypes.c_int, ctypes.c_int,
+		ndpointer(ctypes.c_double, flags="C_CONTIGUOUS")]
 
 
 rootfind_testmatrix = np.zeros((100000,6))
