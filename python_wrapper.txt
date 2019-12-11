@@ -53,4 +53,5 @@ plt.show()
 
 
 
-g++ -shared -o mylib.dll root_eater.c -mstackrealign -O4
+g++ -shared -o mylib.so root_eater.cpp -O4 -fPIC
+ -mstackrealign -O4
