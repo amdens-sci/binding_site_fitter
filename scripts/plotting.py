@@ -45,8 +45,8 @@ def gen_plot(qtapp, generate_residual_popup_plot = False):
   ax2.clear()
   ax.clear()
 
-  ax.set_ylabel('Free drug concentration (ug/mL)')
-  ax.set_xlabel('Total drug concentration (ug/mL)')
+  ax.set_ylabel('Free drug concentration (micromolar)')
+  ax.set_xlabel('Total drug concentration (micromolar)')
   ax.set_yscale('log')
   ax.set_xscale('log')
 

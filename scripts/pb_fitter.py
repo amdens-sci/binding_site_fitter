@@ -20,7 +20,7 @@ class protfitter(QMainWindow):
     
     self.current_model_selection = self.regression_options['One-binding site model']
     self.current_weight_selection = self.weight_options['No weighting']
-    self.color_options = {'Blue':'b', 'Green':'g', 'Red':'r'}
+    self.color_options = {'Blue':'b', 'Green':'g', 'Red':'r', 'Orange':'orange'}
     self.color_index = {'b':0, 'g':1, 'r':2}
 
     self.central_plot = Figure(figsize=(15,5))
@@ -72,6 +72,7 @@ class protfitter(QMainWindow):
     self.color_palette.addItem("Blue")
     self.color_palette.addItem("Green")
     self.color_palette.addItem("Red")
+    self.color_palette.addItem("Orange")
     self.color_palette.activated[str].connect(self.change_color_palette)
     left_panel.addWidget(self.color_palette)
 
@@ -130,7 +131,7 @@ class protfitter(QMainWindow):
         self.sudden_death("There was an error generating the output file. Data has not been saved.")
     alert = QMessageBox()
     alert.setText("Congratulations! Your results are saved to %s"%filename)
-    alert.setIconPixmap(QPixmap(os.path.join('lib', 'success.jpg')))
+    alert.setIconPixmap(QPixmap(os.path.join('..', 'lib', 'success.jpg')))
     alert.setWindowTitle('Protein Fitter')
     alert.exec_()
         
@@ -203,6 +204,8 @@ class protfitter(QMainWindow):
       try:
         self.current_model.associated_data = pd.read_csv(filename, header=None)
         self.current_model.associated_data.columns = ['total', 'free']
+        self.current_model.associated_data['total'] /= 0.222
+        self.current_model.associated_data['free'] /= 0.222
       except:
         self.sudden_death('There was an error opening the selected file! Clearly you have made a mistake. '
           'One reason why this may have occurred '
@@ -233,7 +236,7 @@ class protfitter(QMainWindow):
   def sudden_death(self, error_message):
     alert = QMessageBox()
     alert.setText(error_message)
-    alert.setIconPixmap(QPixmap(os.path.join('lib', 'failure.jpg')))
+    alert.setIconPixmap(QPixmap(os.path.join('..','lib', 'failure.jpg')))
     alert.setWindowTitle('Sudden Death')
     alert.exec_()
 

@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QMessageBox
 #to the input numpy array, dimensions of the input array and pointer to the output numpy array
 #which the C++ functions will assume is correctly sized. THe output numpy array will be modified
 #in place so nothing needs to be returned. Extremely important the numpy arrays are C-contiguous!
-lib = np.ctypeslib.load_library('mylib.so', os.getcwd())
+lib = np.ctypeslib.load_library('rootfinder.so', os.path.join('..','lib'))
 rootfind2 = lib.single_pos_special_cubic
 rootfind2.restype = None
 rootfind2.argtypes = [ndpointer(ctypes.c_double, flags="C_CONTIGUOUS"),
