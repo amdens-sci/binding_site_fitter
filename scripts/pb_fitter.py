@@ -131,7 +131,7 @@ class protfitter(QMainWindow):
         self.sudden_death("There was an error generating the output file. Data has not been saved.")
     alert = QMessageBox()
     alert.setText("Congratulations! Your results are saved to %s"%filename)
-    alert.setIconPixmap(QPixmap(os.path.join('..', 'lib', 'success.jpg')))
+    alert.setIconPixmap(QPixmap(os.path.join('lib', 'success.jpg')))
     alert.setWindowTitle('Protein Fitter')
     alert.exec_()
         
@@ -236,7 +236,7 @@ class protfitter(QMainWindow):
   def sudden_death(self, error_message):
     alert = QMessageBox()
     alert.setText(error_message)
-    alert.setIconPixmap(QPixmap(os.path.join('..','lib', 'failure.jpg')))
+    alert.setIconPixmap(QPixmap(os.path.join('lib', 'failure.jpg')))
     alert.setWindowTitle('Sudden Death')
     alert.exec_()
 
