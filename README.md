@@ -2,8 +2,7 @@
 Python / C++ GUI application for fitting binding site data
 
 PB_Fitter is a simple GUI calculator for fitting protein binding data for drugs to one- and two-binding site models, saving the
-resulting model and using it to calculate free drug for pharmacokinetic data. It's easy and intuitive to use and automatically
-provides the statistics you need to evaluate the quality of the fit. It was developed for use by the pharmacology team at Qpex
+resulting model and using it to calculate free drug for pharmacokinetic data. It was developed for use by the pharmacology team at Qpex
 Bio.
 
 ## Installation
