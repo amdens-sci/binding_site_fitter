@@ -204,8 +204,6 @@ class protfitter(QMainWindow):
       try:
         self.current_model.associated_data = pd.read_csv(filename, header=None)
         self.current_model.associated_data.columns = ['total', 'free']
-        self.current_model.associated_data['total'] /= 0.222
-        self.current_model.associated_data['free'] /= 0.222
       except:
         self.sudden_death('There was an error opening the selected file! Clearly you have made a mistake. '
           'One reason why this may have occurred '
